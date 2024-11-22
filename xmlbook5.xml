@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE library SYSTEM "book.dtd">
+<library>
+    <book>
+        <title>Introduction to Programming</title>
+        <author>John Doe</author>
+        <isbn>123-4567890123</isbn>
+        <publisher>Tech Books</publisher>
+        <edition>2nd</edition>
+        <price>29.99</price>
+    </book>
+    <book>
+        <title>Advanced Web Development</title>
+        <author>Jane Smith</author>
+        <isbn>234-5678901234</isbn>
+        <publisher>Web Publishers</publisher>
+        <edition>1st</edition>
+        <price>39.99</price>
+    </book>
+    <book>
+        <title>Data Structures and Algorithms</title>
+        <author>Mark Johnson</author>
+        <isbn>345-6789012345</isbn>
+        <publisher>Algorithm Press</publisher>
+        <edition>3rd</edition>
+        <price>49.99</price>
+    </book>
+</library>
