@@ -1,28 +1,101 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE library SYSTEM "book.dtd">
-<library>
-    <book>
-        <title>Introduction to Programming</title>
-        <author>John Doe</author>
-        <isbn>123-4567890123</isbn>
-        <publisher>Tech Books</publisher>
-        <edition>2nd</edition>
-        <price>29.99</price>
-    </book>
-    <book>
-        <title>Advanced Web Development</title>
-        <author>Jane Smith</author>
-        <isbn>234-5678901234</isbn>
-        <publisher>Web Publishers</publisher>
-        <edition>1st</edition>
-        <price>39.99</price>
-    </book>
-    <book>
-        <title>Data Structures and Algorithms</title>
-        <author>Mark Johnson</author>
-        <isbn>345-6789012345</isbn>
-        <publisher>Algorithm Press</publisher>
-        <edition>3rd</edition>
-        <price>49.99</price>
-    </book>
-</library>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+    <script>
+        function loadBookData() {
+            const parser = new DOMParser();
+            const xmlString = `
+                <?xml version="1.0"?>
+                <library>
+                    <book>
+                        <title>The Catcher in the Rye</title>
+                        <author>J.D. Salinger</author>
+                        <isbn>978-0-316-76948-0</isbn>
+                        <publisher>Little, Brown and Company</publisher>
+                        <edition>1st</edition>
+                        <price>10.99</price>
+                    </book>
+                    <book>
+                        <title>1984</title>
+                        <author>George Orwell</author>
+                        <isbn>978-0-452-28423-4</isbn>
+                        <publisher>Plume</publisher>
+                        <edition>1st</edition>
+                        <price>9.99</price>
+                    </book>
+                    <book>
+                        <title>To Kill a Mockingbird</title>
+                        <author>Harper Lee</author>
+                        <isbn>978-0-06-112008-4</isbn>
+                        <publisher>Harper Perennial Modern Classics</publisher>
+                        <edition>1st</edition>
+                        <price>12.99</price>
+                    </book>
+                </library>
+            `;
+            const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+            const books = xmlDoc.getElementsByTagName("book");
+            let output = `
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th>Publisher</th>
+                        <th>Edition</th>
+                        <th>Price</th>
+                    </tr>
+            `;
+
+            for (let i = 0; i < books.length; i++) {
+                const title = books[i].getElementsByTagName("title")[0].textContent;
+                const author = books[i].getElementsByTagName("author")[0].textContent;
+                const isbn = books[i].getElementsByTagName("isbn")[0].textContent;
+                const publisher = books[i].getElementsByTagName("publisher")[0].textContent;
+                const edition = books[i].getElementsByTagName("edition")[0].textContent;
+                const price = books[i].getElementsByTagName("price")[0].textContent;
+
+                output += `
+                    <tr>
+                        <td>${title}</td>
+                        <td>${author}</td>
+                        <td>${isbn}</td>
+                        <td>${publisher}</td>
+                        <td>${edition}</td>
+                        <td>${price}</td>
+                    </tr>
+                `;
+            }
+            output += `</table>`;
+            document.getElementById("result").innerHTML = output;
+        }
+    </script>
+</head>
+<body>
+    <h1>Library Book Information</h1>
+    <button onclick="loadBookData()">Load Book Data</button>
+    <div id="result"></div>
+</body>
+</html>
