@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Details XML with Embedded Schema</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+    <script>
+        function validateAndLoadXML() {
+            // Simulated XML data
+            const xmlString = `
+                <?xml version="1.0"?>
+                <cars>
+                    <car>
+                        <id>1</id>
+                        <company>Toyota</company>
+                        <model>Corolla</model>
+                        <engine>1.8L</engine>
+                        <mileage>30 MPG</mileage>
+                    </car>
+                    <car>
+                        <id>2</id>
+                        <company>Honda</company>
+                        <model>Civic</model>
+                        <engine>2.0L</engine>
+                        <mileage>28 MPG</mileage>
+                    </car>
+                    <car>
+                        <id>3</id>
+                        <company>Ford</company>
+                        <model>Focus</model>
+                        <engine>2.3L</engine>
+                        <mileage>25 MPG</mileage>
+                    </car>
+                </cars>
+            `;
+
+            // Simulated schema validation (simplified for demonstration)
+            const requiredFields = ['id', 'company', 'model', 'engine', 'mileage'];
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+            const cars = xmlDoc.getElementsByTagName("car");
+            let isValid = true;
+
+            for (let i = 0; i < cars.length; i++) {
+                requiredFields.forEach(field => {
+                    if (!cars[i].getElementsByTagName(field)[0]) {
+                        isValid = false;
+                        console.error(`Validation Error: Missing <${field}> in car ${i + 1}`);
+                    }
+                });
+            }
+
+            if (!isValid) {
+                alert("XML validation failed. Check console for details.");
+                return;
+            }
+
+            // Display the data in a table
+            let output = `
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Company</th>
+                        <th>Model</th>
+                        <th>Engine</th>
+                        <th>Mileage</th>
+                    </tr>
+            `;
+
+            for (let i = 0; i < cars.length; i++) {
+                const id = cars[i].getElementsByTagName("id")[0].textContent;
+                const company = cars[i].getElementsByTagName("company")[0].textContent;
+                const model = cars[i].getElementsByTagName("model")[0].textContent;
+                const engine = cars[i].getElementsByTagName("engine")[0].textContent;
+                const mileage = cars[i].getElementsByTagName("mileage")[0].textContent;
+
+                output += `
+                    <tr>
+                        <td>${id}</td>
+                        <td>${company}</td>
+                        <td>${model}</td>
+                        <td>${engine}</td>
+                        <td>${mileage}</td>
+                    </tr>
+                `;
+            }
+
+            output += `</table>`;
+            document.getElementById("result").innerHTML = output;
+        }
+    </script>
+</head>
+<body>
+    <h1>Car Details</h1>
+    <button onclick="validateAndLoadXML()">Load Car Data</button>
+    <div id="result"></div>
+</body>
+</html>
