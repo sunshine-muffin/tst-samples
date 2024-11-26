@@ -3,62 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Validation</title>
+    <title>Form Validation with DHTML</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            margin: 20px;
         }
-        .form-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: auto;
+        form {
+            max-width: 400px;
+            margin: 0 auto;
         }
-        input[type="text"] {
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, button {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            padding: 8px;
+            margin-bottom: 15px;
         }
-        button {
-            padding: 10px 15px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #555;
+        .error {
+            color: red;
+            font-size: 0.9em;
         }
     </style>
-    <script type="text/javascript">
-        function validate_form() {
-            var name = document.getElementById('name').value;
-            if (name == "") {
-                alert("Enter your name");
-            } else {
-                alert("Successful");
+    <script>
+        function validateForm() {
+            // Access form fields
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            let valid = true;
+
+            // Clear previous errors
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+
+            // Name validation
+            if (name === '') {
+                document.getElementById('nameError').textContent = 'Name is required.';
+                valid = false;
             }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'Email is required.';
+                valid = false;
+            } else if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Enter a valid email.';
+                valid = false;
+            }
+
+            // Password validation
+            if (password === '') {
+                document.getElementById('passwordError').textContent = 'Password is required.';
+                valid = false;
+            } else if (password.length < 6) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
+                valid = false;
+            }
+
+            return valid;
         }
     </script>
 </head>
 <body>
+    <h1>Form Validation with DHTML</h1>
+    <form onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <span id="nameError" class="error"></span>
 
-    <div class="form-container">
-        <h2>Form Validation</h2>
-        <form onsubmit="return false;">
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name"><br>
-            <button onclick="validate_form()">Submit</button>
-        </form>
-    </div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+        <span id="emailError" class="error"></span>
 
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <span id="passwordError" class="error"></span>
+
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
