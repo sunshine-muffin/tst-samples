@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation Using PHP and JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const email = document.getElementById("email").value.trim();
+            const url = document.getElementById("url").value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const urlRegex = /^(https?:\/\/)?([\w-]+)\.([a-z]{2,})(\/\S*)?$/;
+
+            let valid = true;
+            document.getElementById("emailError").textContent = "";
+            document.getElementById("urlError").textContent = "";
+
+            if (!emailRegex.test(email)) {
+                document.getElementById("emailError").textContent = "Invalid email format.";
+                valid = false;
+            }
+            if (!urlRegex.test(url)) {
+                document.getElementById("urlError").textContent = "Invalid URL format.";
+                valid = false;
+            }
+
+            return valid;
+        }
+    </script>
+</head>
+<body>
+    <h1>Form Validation Using PHP and JavaScript</h1>
+    <form action="" method="POST" onsubmit="return validateForm();">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email">
+        <div id="emailError" class="error"></div>
+
+        <label for="url">Website URL:</label>
+        <input type="text" id="url" name="url" placeholder="Enter your website URL">
+        <div id="urlError" class="error"></div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = $_POST["email"];
+        $url = $_POST["url"];
+        $errors = [];
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Invalid email format.";
+        }
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            $errors[] = "Invalid URL format.";
+        }
+
+        if (empty($errors)) {
+            echo "<p style='color: green;'>Form submitted successfully!</p>";
+            echo "<p>Email: " . htmlspecialchars($email) . "</p>";
+            echo "<p>URL: " . htmlspecialchars($url) . "</p>";
+        } else {
+            foreach ($errors as $error) {
+                echo "<p style='color: red;'>$error</p>";
+            }
+        }
+    }
+    ?>
+</body>
+</html>
