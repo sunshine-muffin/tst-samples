@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Retrieval from XML Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .form-container input {
+            padding: 10px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        .form-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function searchUser() {
+            const userId = document.getElementById("userId").value.trim(); // Trim input
+
+            // Simulated XML data
+            const xmlString = `
+                <?xml version="1.0"?>
+                <users>
+                    <user>
+                        <id>1</id>
+                        <name>John Doe</name>
+                        <email>john@example.com</email>
+                        <phone>123-456-7890</phone>
+                    </user>
+                    <user>
+                        <id>2</id>
+                        <name>Jane Smith</name>
+                        <email>jane@example.com</email>
+                        <phone>987-654-3210</phone>
+                    </user>
+                    <user>
+                        <id>3</id>
+                        <name>Emily Johnson</name>
+                        <email>emily@example.com</email>
+                        <phone>456-789-1234</phone>
+                    </user>
+                </users>
+            `;
+
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+            const users = xmlDoc.getElementsByTagName("user");
+
+            let userFound = null;
+            for (let i = 0; i < users.length; i++) {
+                const id = users[i].getElementsByTagName("id")[0].textContent.trim(); // Trim XML content
+                if (id === userId) {
+                    userFound = users[i];
+                    break;
+                }
+            }
+
+            const resultContainer = document.getElementById("result");
+            if (userFound) {
+                const name = userFound.getElementsByTagName("name")[0].textContent.trim();
+                const email = userFound.getElementsByTagName("email")[0].textContent.trim();
+                const phone = userFound.getElementsByTagName("phone")[0].textContent.trim();
+
+                resultContainer.innerHTML = `
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                        <tr>
+                            <td>${userId}</td>
+                            <td>${name}</td>
+                            <td>${email}</td>
+                            <td>${phone}</td>
+                        </tr>
+                    </table>
+                `;
+            } else {
+                resultContainer.innerHTML = `<p style="color: red;">User with ID ${userId} not found.</p>`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Information Retrieval from XML Document</h1>
+    <div class="form-container">
+        <input type="text" id="userId" placeholder="Enter User ID">
+        <button onclick="searchUser()">Search</button>
+    </div>
+    <div id="result"></div>
+</body>
+</html>
